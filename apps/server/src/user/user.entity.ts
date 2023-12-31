@@ -65,12 +65,12 @@ export class User {
   @OneToMany(() => Organization, (org) => org.owner, {
     cascade: true,
   })
-  ownedOrganizations: Organization[];
+  organizations: Organization[];
 
   @OneToMany(() => OrganizationUser, (org_user) => org_user.user, {
     cascade: true,
   })
-  organizations: OrganizationUser[];
+  ownedOrganizations: OrganizationUser[];
 
   static create(userInfo: {
     firstName: string;

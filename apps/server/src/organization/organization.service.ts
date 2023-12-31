@@ -38,6 +38,23 @@ export class OrganizationService {
     }
   }
 
+  private async getUserOwnedOrgs(userId: number) {
+    return (await this.getAdminOrg(userId))?.map((org) => org.org_id) || [];
+  }
+
+  private async getAdminOrg(userId: number): Promise<{ org_id: string }[]> {
+    return await this.orgUserRepository
+      .createQueryBuilder('org_user')
+      .leftJoinAndSelect(
+        'org_user.user',
+        'user',
+        'org_user.user_id = :userId',
+        { userId },
+      )
+      .where('org_user.isOwner = :isOwner', { isOwner: true })
+      .select(['org_user.organization'])
+      .getRawMany();
+  }
   //must not exceed max value
   async addMemberToOrg(
     user: User,
@@ -79,7 +96,24 @@ export class OrganizationService {
     }
   }
 
-  async getUsersOrg(userId: number) {
+  async getUserOrgs(userId: number) {
+    const ownedOrgIds = await this.getUserOwnedOrgs(userId);
+    const allUsersOrgs = [...(await this.findOrgByUserId(userId))] as Array<
+      Organization & { isOwned: boolean }
+    >;
+
+    allUsersOrgs.forEach((org) => {
+      if (ownedOrgIds.includes(org.id)) {
+        org.isOwned = true;
+      } else {
+        org.isOwned = false;
+      }
+    });
+
+    return allUsersOrgs;
+  }
+
+  private async findOrgByUserId(userId: number) {
     try {
       return await this.orgRepository
         .createQueryBuilder('og')

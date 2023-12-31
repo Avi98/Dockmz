@@ -9,13 +9,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginFormType } from "../../../../../schema/login";
 import { useRouter } from "next/navigation";
+import { privatePath } from "../../../../utils/paths";
 
 export const LoginForm = () => {
   const router = useRouter();
 
   const { mutate: login, isLoading } = useLogin({
     onSuccess: () => {
-      router.push("/dashboard");
+      router.push(privatePath.organization);
       toast({
         desc: "Welcome back!",
         title: "Login Successful",

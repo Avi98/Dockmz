@@ -61,7 +61,7 @@ export class OrganizationController {
   @UseGuards(SessionGuard)
   @Get('get-orgs/:userId')
   async getOrgs(@Param('userId') userId: string) {
-    return await this.orgService.getUsersOrg(Number(userId));
+    return await this.orgService.getUserOrgs(Number(userId));
   }
 
   @UseGuards(SessionGuard, RolesGuard)

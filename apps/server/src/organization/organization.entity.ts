@@ -16,7 +16,6 @@ import { OrganizationUser } from './organization-user.entity';
 @Entity()
 @Unique(['owner', 'name'])
 export class Organization {
-  @Exclude()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

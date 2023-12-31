@@ -3,6 +3,7 @@ import { LogoResponsiveIcon } from "../../../../components/logo/responsive-logo"
 import { useSideBar } from "../../../../components/provider/side-bar-provider";
 import { CloseSideBar, NavBar, SideBar } from "../../../../components/sideBar";
 import { ClipboardCheckIcon, Command, UserPlus2, Users } from "lucide-react";
+import { privatePath } from "../../../../utils/paths";
 
 export const OuterSideBar = () => {
   const { isOpen } = useSideBar();
@@ -14,25 +15,25 @@ export const OuterSideBar = () => {
       <NavBar.List>
         <NavBar.LinkItem
           hideLabel={isOpen}
-          href="/dashboard"
+          href={privatePath.dashboard}
           icon={<Command />}
           label="All Projects"
         />
         <NavBar.LinkItem
           hideLabel={isOpen}
-          href="/dashboard/members"
+          href={privatePath.members}
           icon={<Users />}
           label="View members"
         />
         <NavBar.LinkItem
           hideLabel={isOpen}
-          href="/dashboard/add-member"
+          href={privatePath.addMembers}
           icon={<UserPlus2 />}
           label="Add new members"
         />
         <NavBar.LinkItem
           hideLabel={isOpen}
-          href="/dashboard/create-project"
+          href={privatePath.createProjects}
           icon={<ClipboardCheckIcon />}
           label="Create new project"
         />

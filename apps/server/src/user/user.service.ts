@@ -31,12 +31,17 @@ export class UserService {
   }
 
   async getUserById(userId: number) {
-    return await this.userRepository.findOne({
+    const organizations = await this.organizationService.getUserOrgs(userId);
+    const user = await this.userRepository.findOne({
       where: {
         id: userId,
       },
-      relations: ['organizations', 'ownedOrganizations'],
     });
+
+    return {
+      ...user,
+      organizations,
+    };
   }
 
   async createNewUser(userInfo: {

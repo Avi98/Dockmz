@@ -1,4 +1,5 @@
 import { UserRoleEnum } from "../enums/memberRoleEnum";
+import { PROTECTED_PATHS } from "../initAuth/const";
 import { MEMBER_ROLES } from "./constants";
 
 export const getFullNameInitials = (fullName: string) => {
@@ -14,3 +15,6 @@ export const getFullNameInitials = (fullName: string) => {
 export const castStringToMember = (str: string) => {
   if (MEMBER_ROLES.includes(str as any)) return str as UserRoleEnum;
 };
+
+export const isProtectedRoute = (path: string) =>
+  Boolean(PROTECTED_PATHS.find((protectedPath) => path === protectedPath));

@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PROTECTED_PATHS } from "./const";
 import { UnAuthorizedError } from "../utils/exceptions";
 import { GET } from "../app/(private)/api/route";
+import { isProtectedRoute } from "../utils";
 
 const REDIRECT_URL = "redirect-url";
 
 const initAuth = async (req: NextRequest, res: typeof NextResponse) => {
   try {
-    if (PROTECTED_PATHS.includes(req.nextUrl.pathname)) {
+    if (isProtectedRoute(req.nextUrl.pathname)) {
       await GET().then(
         () => {
           return res.next();
@@ -35,8 +35,8 @@ const shouldRedirect = (currentPath: URL) => {
   const hasRedirectPath = currentPath.searchParams.get(REDIRECT_URL);
   if (hasRedirectPath) return false;
 
-  const isProtectedRoute = PROTECTED_PATHS.includes(currentPath.pathname);
-  if (isProtectedRoute) return true;
+  const hasRoute = isProtectedRoute(currentPath.pathname);
+  if (hasRoute) return true;
 };
 
 const getAuthRedirect = (url: URL) => {
